@@ -56,16 +56,16 @@ export const removeDollars = (amounts: string[]): number[] => {
  * in question marks ("?").
  */
 export const shoutIfExclaiming = (messages: string[]): string[] => {
-    const exclaim_arr: string[] = messages.map((str: string) => {
+    const exclaim_arr = messages.map((str: string) => {
         if (str.endsWith("!")) {
             return str.toUpperCase();
         } else if (str.endsWith("?")) {
-            // REMOVE
+            return;
         } else {
             return str;
         }
     });
-    return exclaim_arr;
+    return exclaim_arr.filter((str) => str !== undefined);
 };
 
 /**
@@ -73,7 +73,10 @@ export const shoutIfExclaiming = (messages: string[]): string[] => {
  * 4 letters long.
  */
 export function countShortWords(words: string[]): number {
-    return 0;
+    const under_four: number = words.filter(
+        (word: string) => word.length < 4,
+    ).length;
+    return under_four;
 }
 
 /**
@@ -82,7 +85,11 @@ export function countShortWords(words: string[]): number {
  * then return true.
  */
 export function allRGB(colors: string[]): boolean {
-    return false;
+    const rgb: string[] = ["red", "green", "blue"];
+    if (colors.length == 0) {
+        return true;
+    }
+    return colors.every((color) => rgb.includes(color));
 }
 
 /**
@@ -93,7 +100,12 @@ export function allRGB(colors: string[]): boolean {
  * And the array [] would become "0=0".
  */
 export function makeMath(addends: number[]): string {
-    return "";
+    const sum: number = addends.reduce(
+        (currentTotal: number, num: number) => currentTotal + num,
+        0,
+    );
+    const sum_str: string = addends.join("+") || "0";
+    return sum + "=" + sum_str;
 }
 
 /**
