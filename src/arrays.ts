@@ -5,7 +5,12 @@
  * the number twice.
  */
 export function bookEndList(numbers: number[]): number[] {
-    return numbers;
+    const new_arr: number[] = numbers;
+    if (new_arr.length > 0) {
+        return [new_arr[0], new_arr[new_arr.length - 1]];
+    } else {
+        return [];
+    }
 }
 
 /**
@@ -13,7 +18,8 @@ export function bookEndList(numbers: number[]): number[] {
  * number has been tripled (multiplied by 3).
  */
 export function tripleNumbers(numbers: number[]): number[] {
-    return numbers;
+    const tripled_arr: number[] = numbers.map((num: number): number => num * 3);
+    return tripled_arr;
 }
 
 /**
@@ -21,7 +27,11 @@ export function tripleNumbers(numbers: number[]): number[] {
  * the number cannot be parsed as an integer, convert it to 0 instead.
  */
 export function stringsToIntegers(numbers: string[]): number[] {
-    return [];
+    const int_arr: number[] = numbers.map((num: string) => {
+        const ints = parseInt(num, 10);
+        return isNaN(ints) ? 0 : ints; // Use ternary op to check if element is a valid number
+    });
+    return int_arr;
 }
 
 /**
@@ -32,7 +42,12 @@ export function stringsToIntegers(numbers: string[]): number[] {
  */
 // Remember, you can write functions as lambdas too! They work exactly the same.
 export const removeDollars = (amounts: string[]): number[] => {
-    return [];
+    const int_arr: number[] = amounts.map((num: string) => {
+        const rem_sign = num.replace("$", "");
+        const ints = parseInt(rem_sign, 10);
+        return isNaN(ints) ? 0 : ints; // Use ternary op to check if element is a valid number
+    });
+    return int_arr;
 };
 
 /**
@@ -41,7 +56,16 @@ export const removeDollars = (amounts: string[]): number[] => {
  * in question marks ("?").
  */
 export const shoutIfExclaiming = (messages: string[]): string[] => {
-    return [];
+    const exclaim_arr: string[] = messages.map((str: string) => {
+        if (str.endsWith("!")) {
+            return str.toUpperCase();
+        } else if (str.endsWith("?")) {
+            // REMOVE
+        } else {
+            return str;
+        }
+    });
+    return exclaim_arr;
 };
 
 /**
