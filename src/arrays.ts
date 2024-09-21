@@ -118,5 +118,28 @@ export function makeMath(addends: number[]): string {
  * And the array [1, 9, 7] would become [1, 9, 7, 17]
  */
 export function injectPositive(values: number[]): number[] {
-    return [];
+    const sum: number = values.reduce(
+        (currentTotal: number, num: number) => currentTotal + num,
+        0,
+    );
+
+    // Use the reduce function since it acts similar to a loop
+    const new_val_arr: number[] = values.reduce(
+        (acc: number[], num: number, i: number) => {
+            acc.push(num);
+
+            // Check if this is the first negative number
+            if (num < 0 && !acc.includes(sum)) {
+                acc.push(acc.slice(0, i).reduce((sum, n) => sum + n, 0));
+            }
+            return acc;
+        },
+        [],
+    );
+
+    // If no negatives, add sum to list
+    if (!values.some((num) => num < 0)) {
+        new_val_arr.push(sum);
+    }
+    return new_val_arr;
 }
