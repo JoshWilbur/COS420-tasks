@@ -1,5 +1,6 @@
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
+import { makeBlankQuestion, duplicateQuestion } from "./objects";
 
 /**
  * Consumes an array of questions and returns a new array with only the questions
@@ -16,10 +17,7 @@ export function getPublishedQuestions(questions: Question[]): Question[] {
  */
 export function getNonEmptyQuestions(questions: Question[]): Question[] {
     return questions.filter(
-        (question) =>
-            question.body !== "" ||
-            question.expected !== "" ||
-            question.options.length > 0,
+        (q) => q.body != "" || q.expected != "" || q.options.length > 0,
     );
 }
 
@@ -149,7 +147,7 @@ export function publishAll(questions: Question[]): Question[] {
  */
 export function sameType(questions: Question[]): boolean {
     // Compare every type to the first questions type
-    const check: boolean = questions.every((q) => q.type === questions[0].type);
+    const check: boolean = questions.every((q) => q.type == questions[0].type);
     return check;
 }
 
@@ -164,7 +162,8 @@ export function addNewQuestion(
     name: string,
     type: QuestionType,
 ): Question[] {
-    return [];
+    const blankQuestion: Question = makeBlankQuestion(id, name, type);
+    return [...questions, blankQuestion];
 }
 
 /***
@@ -177,7 +176,15 @@ export function renameQuestionById(
     targetId: number,
     newName: string,
 ): Question[] {
-    return [];
+    return questions.map((q) => {
+        if (q.id == targetId) {
+            return {
+                ...q,
+                name: newName, // only update the name
+            };
+        }
+        return q;
+    });
 }
 
 /***
@@ -192,7 +199,21 @@ export function changeQuestionTypeById(
     targetId: number,
     newQuestionType: QuestionType,
 ): Question[] {
-    return [];
+    const new_questions: Question[] = questions.map((q) => {
+        if (q.id == targetId) {
+            const updated_question = {
+                ...q,
+                type: newQuestionType, // update the type
+            };
+
+            if (newQuestionType != "multiple_choice_question") {
+                updated_question.options = [];
+            }
+            return updated_question; // return the question
+        }
+        return q;
+    });
+    return new_questions;
 }
 
 /**
@@ -205,13 +226,40 @@ export function changeQuestionTypeById(
  * Remember, if a function starts getting too complicated, think about how a helper function
  * can make it simpler! Break down complicated tasks into little pieces.
  */
+// Helper function to update options list
+function updateOptions(
+    options: string[],
+    targetOptionIndex: number,
+    newOption: string,
+): string[] {
+    if (targetOptionIndex === -1) {
+        return [...options, newOption]; // add the new option to end of array
+    } else if (targetOptionIndex >= 0 && targetOptionIndex < options.length) {
+        const updated_options = [...options]; // replace current option
+        updated_options[targetOptionIndex] = newOption;
+        return updated_options;
+    }
+    return options;
+}
+
 export function editOption(
     questions: Question[],
     targetId: number,
     targetOptionIndex: number,
     newOption: string,
 ): Question[] {
-    return [];
+    return questions.map((q) => {
+        if (q.id === targetId) {
+            const updated_option: string[] = updateOptions(
+                // use helper function defined above
+                q.options,
+                targetOptionIndex,
+                newOption,
+            );
+            return { ...q, options: updated_option };
+        }
+        return q;
+    });
 }
 
 /***
@@ -225,5 +273,14 @@ export function duplicateQuestionInArray(
     targetId: number,
     newId: number,
 ): Question[] {
-    return [];
+    const output_q: Question[] = []; // array for results
+    for (const q of questions) {
+        output_q.push(q); // push the question to result
+
+        if (q.id === targetId) {
+            const dup_question = duplicateQuestion(newId, q); // defined in objects.ts
+            output_q.push(dup_question); // push the duplicate one to result
+        }
+    }
+    return output_q;
 }
