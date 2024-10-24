@@ -60,12 +60,14 @@ export const shoutIfExclaiming = (messages: string[]): string[] => {
         if (str.endsWith("!")) {
             return str.toUpperCase();
         } else if (str.endsWith("?")) {
-            return;
+            return undefined; // Explicitly return undefined for clarity
         } else {
             return str;
         }
     });
-    return exclaim_arr.filter((str) => str !== undefined);
+
+    // Use a type guard to filter out undefined values
+    return exclaim_arr.filter((str): str is string => str !== undefined);
 };
 
 /**
