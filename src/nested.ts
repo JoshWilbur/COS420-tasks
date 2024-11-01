@@ -40,6 +40,7 @@ export function findQuestion(
 /**
  * Consumes an array of questions and returns a new array that does not contain the question
  * with the given `id`.
+ * Hint: use filter
  */
 export function removeQuestion(questions: Question[], id: number): Question[] {
     const question: Question[] = questions.filter((q) => !(q.id == id));
@@ -49,6 +50,7 @@ export function removeQuestion(questions: Question[], id: number): Question[] {
 /***
  * Consumes an array of questions and returns a new array containing just the names of the
  * questions, as an array.
+ * Do not modify the input array.
  */
 export function getNames(questions: Question[]): string[] {
     const question: string[] = questions.map((q) => q.name);
@@ -129,6 +131,7 @@ export function makeAnswers(questions: Question[]): Answer[] {
 /***
  * Consumes an array of Questions and produces a new array of questions, where
  * each question is now published, regardless of its previous published status.
+ * Hint: as usual, do not modify the input questions array
  */
 export function publishAll(questions: Question[]): Question[] {
     const allPublished: Question[] = questions.map((q) => {
@@ -155,6 +158,7 @@ export function sameType(questions: Question[]): boolean {
  * Consumes an array of Questions and produces a new array of the same Questions,
  * except that a blank question has been added onto the end. Reuse the `makeBlankQuestion`
  * you defined in the `objects.ts` file.
+ * Hint: as usual, do not modify the input questions array
  */
 export function addNewQuestion(
     questions: Question[],
@@ -170,6 +174,8 @@ export function addNewQuestion(
  * Consumes an array of Questions and produces a new array of Questions, where all
  * the Questions are the same EXCEPT for the one with the given `targetId`. That
  * Question should be the same EXCEPT that its name should now be `newName`.
+ * Hint: as usual, do not modify the input questions array,
+ *       to make a new copy of a question with some changes, use the ... operator
  */
 export function renameQuestionById(
     questions: Question[],
