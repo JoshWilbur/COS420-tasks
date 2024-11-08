@@ -28,6 +28,8 @@ function App(): React.JSX.Element {
             <TwoDice></TwoDice>
             <hr />
             <ChangeType></ChangeType>
+            <hr />
+            <DoubleHalf></DoubleHalf>
         </div>
     );
 }
